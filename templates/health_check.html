@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Instance Health</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border: 1px solid #ddd; }
+        th { background-color: #f4f4f4; }
+        .alert { color: red; font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>EC2 Instance Health and CPU Utilization</h1>
+
+    {% if instance_health %}
+        <table>
+            <tr>
+                <th>Instance ID</th>
+                <th>State</th>
+                <th>Public IP</th>
+                <th>CPU Utilization (%)</th>
+            </tr>
+            {% for instance in instance_health %}
+                {% if instance.Message %}
+                    <tr>
+                        <td colspan="4" class="alert">{{ instance.Message }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ instance.InstanceId }}</td>
+                        <td>{{ instance.State }}</td>
+                        <td>{{ instance.PublicIP }}</td>
+                        <td>{{ instance.CPUUtilization }}%</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No EC2 instances found.</p>
+    {% endif %}
+</body>
+</html>
+
